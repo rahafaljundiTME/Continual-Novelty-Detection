@@ -1,4 +1,4 @@
-`
+`This is the code base for the Continual Novelty Detection paper, Collas 2022.
 
 TINY IMAGENET EXAMPLE
 create tinyimagenet sequence
