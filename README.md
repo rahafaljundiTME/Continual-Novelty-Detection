@@ -1,4 +1,5 @@
-`This is the code base for the Continual Novelty Detection paper, Collas 2022.
+This is the code base for the Continual Novelty Detection paper, Collas 2022.
+Below is an example of how to run a continual learning sequence, construct the 3 sets of In,Out,Forg, and, evaluate a given novelty detection method. 
 
 TINY IMAGENET EXAMPLE
 create tinyimagenet sequence
