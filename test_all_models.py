@@ -55,7 +55,7 @@ for buffer_size in buffer_sizes:
                         try:
                             ###############################################
 
-                            results={}#torch.load("tinyImagenet.pth")
+                            results={}
 
                             parent_exp_dir='./TINYIMAGNET_exp_dir/'#Change to yours
 
@@ -67,7 +67,6 @@ for buffer_size in buffer_sizes:
                             n_tasks=10
                             accs=[[0 for i in range(n_seeds)] for j in range(n_tasks)]
                             forgettings=[[0 for i in range(n_seeds)] for j in range(n_tasks)]
-                            #extra_str="tinyimagenet_exp"+"num_epochs_60reg_lambda_"+str(reg_lambda)+"lr_0.01b1_Falseneuron_omega_Truenormalize_"+str(normalize)+"dropout_Falsescale_"+str(scale)+"_lam"+str(lam)
                             dataset_parent_dir = 'Data/TINYIMAGNET'
                             continual_tester = Continual_Tester(n_tasks, opt, parent_exp_dir, dataset_parent_dir)
                             for seed in range(n_seeds):

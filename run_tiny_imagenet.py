@@ -49,27 +49,8 @@ lr_decay_epoch = 20
 for seed in range(5):
     set_random(seed=seed)
     nb_tasks = 10
-    model_path =''#''./vgg11slim2.pth.tar'
     parent_exp_dir = './TINYIMAGNET_exp_dir/'
-    dataset_parent_dir = 'Data/TINYIMAGNET'
+    dataset_parent_dir = './Data/TINYIMAGNET' #PLEASE DOWNLOAD TINYIMAGENET DATASET
     continual_trainer=Continual_Trainer(nb_tasks ,opt,parent_exp_dir,dataset_parent_dir,seed)
     #models will be saved on  the exp dir
     continual_trainer.train()
-    # for task in range(1, nb_tasks + 1):
-    #     task_name = str(task)
-    #     extra_str = "tinyimagenet_exp"
-    #     for arg in vars(opt):
-    #         extra_str = extra_str + str(arg, ) + '_' + str(getattr(opt, arg))
-    #
-    #     print(extra_str)
-    #
-    #
-    #     parent_exp_dir = './TINYIMAGNET_exp_dir/'
-    #     d
-    #
-    #     exp_dir = os.path.join(parent_exp_dir, task_name, 'CND/'+'Seed'+str(seed) + extra_str)
-    #     dataset_path = os.path.join(dataset_parent_dir, task_name, 'trainval_dataset.pth.tar')
-    #     set_random(seed=seed)
-    #     Regularized_Training.train_on_task(dataset_path=dataset_path, num_epochs=num_epochs, exp_dir=exp_dir,task_index=task, model_path=model_path,
-    #                                        batch_size=200, lr=lr, weight_decay=0,regularization_method=opt.regularization_method, reg_lambda=reg_lambda,opt=opt)
-    #     model_path = os.path.join(exp_dir,"best_model.pth.tar")

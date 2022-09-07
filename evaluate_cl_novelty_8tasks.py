@@ -78,7 +78,7 @@ for arg in vars(opt):
             novelty_extra_str = novelty_extra_str + str(arg, ) + '_' + str(getattr(opt, arg))
 opt.data_mean=[0.485, 0.456, 0.406]
 opt.data_std=[0.229, 0.224, 0.225]
-data_dir='/home/ral3833/8seq/'
+data_dir='./8seq/'
 cn_models=[]#a lost of continual novelty detection models
 cn_models_path = "cnmodels/CN_MODELS"+extra_str+".pth"
 cn_models=torch.load(cn_models_path, map_location= 'cpu')

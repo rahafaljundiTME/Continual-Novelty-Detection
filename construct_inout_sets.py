@@ -114,13 +114,7 @@ def construct_train_in(model_path, dataset_path, batch_size=100,task_index=0,pre
 
 
 parser = argparse.ArgumentParser()
-#parser.add_argument('--num_epochs', type=int, default=100, help='training number of epochs')
-#parser.add_argument('--reg_lambda', type=float, default=4)
-#parser.add_argument('--lr', type=float, default=1e-2, help='Learning rate')
-#parser.add_argument('--b1', type=bool, default=False, help='online')
-#parser.add_argument('--arch',  choices=['ResNet', 'VGG'], default='ResNet', help='backbone architicture')
-#parser.add_argument('--no_bias', action='store_true', help='if it is multi head the bias will be turned off')
-#parser.add_argument('--device', type=str, default='cuda:0', help='which gpu, default is cuda:0?')
+
 parser.add_argument('--num_epochs', type=int, default=100, help='training number of epochs')
 parser.add_argument('--reg_lambda', type=float, default=4)
 parser.add_argument('--lr', type=float, default=1e-2, help='Learning rate')

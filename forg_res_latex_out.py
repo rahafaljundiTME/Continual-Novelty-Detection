@@ -153,7 +153,7 @@ for arch in archs:
                 #forg_in_errs
                 #forg_out_errs
                 mult=100
-                import pdb;pdb.set_trace()
+
                 try:
                     for key in  keys:
                         printed=""

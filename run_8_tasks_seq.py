@@ -52,7 +52,7 @@ for seed in range(5):
     nb_tasks = 8
     model_path =''#''./vgg11slim2.pth.tar'
     parent_exp_dir = './8seq_exp_dir/'
-    dataset_parent_dir = '/home/ral3833/8seq/'
+    dataset_parent_dir = './8seq/'
     continual_trainer=Continual_Trainer(nb_tasks ,opt,parent_exp_dir,dataset_parent_dir,seed)
     #models will be saved on  the exp dir
     continual_trainer.train()

@@ -45,8 +45,7 @@ n_seeds=5
 n_tasks=8
 accs=[[0 for i in range(n_seeds)] for j in range(n_tasks)]
 forgettings=[[0 for i in range(n_seeds)] for j in range(n_tasks)]
-#extra_str="tinyimagenet_exp"+"num_epochs_60reg_lambda_"+str(reg_lambda)+"lr_0.01b1_Falseneuron_omega_Truenormalize_"+str(normalize)+"dropout_Falsescale_"+str(scale)+"_lam"+str(lam)
-dataset_parent_dir = "/home/ral3833/8seq/"
+dataset_parent_dir = "./8seq/"
 continual_tester = Continual_Tester(n_tasks, opt, parent_exp_dir, dataset_parent_dir)
 models_accs=continual_tester.test_taskacc_per_model(0)
 

@@ -13,22 +13,6 @@ test the continual learning performance on TinyImageNet sequence
 """
 parser = argparse.ArgumentParser()
 
-#parser.add_argument('--num_epochs', type=int, default=100, help='training number of epochs')
-#parser.add_argument('--reg_lambda', type=float, default=4)
-#parser.add_argument('--lr', type=float, default=1e-2, help='Learning rate')
-#parser.add_argument('--b1', type=bool, default=False, help='online')
-#parser.add_argument('--arch',  choices=['ResNet', 'VGG'], default='ResNet', help='backbone architicture')
-#parser.add_argument('--dropout', type=bool, default=False, help='dropout enabled or disabled?')
-#parser.add_argument('--device', type=str, default='cuda:0', help='which gpu, default is cuda:0?')
-#parser.add_argument('--no_bias', action='store_true', help='if it is multi head the bias will be turned off') 
-#parser.add_argument('--regularization_method', choices=['MAS', 'LwF'], default='MAS', help='which regularization  method should be used for continual learning?')
-#parser.add_argument('--shared_head',  action='store_true', help='is it a shared head experminet with one shared output layer among all tasks?')
-#parser.add_argument('--all_initialized',  action='store_true', help='if it is a shared head, this defines the initialization of the neurons')
-#parser.add_argument('--buffer_size', type=int, default=0, help='buffer size for replayed samples')
-#parser.add_argument('--batch_size', type=int, default=64, help='buffer size for replayed samples')
-#parser.add_argument('--lr_decay_rate', type=float, default=0.1, help='buffer size for replayed samples')
-#parser.add_argument('--dropr', type=float, default=0.5, help='dropout rate')
-#parser.add_argument('--lr_scheduler',  choices=['exp', 'plt'], default='plt', help='learning rate scheduler')
 parser.add_argument('--num_epochs', type=int, default=100, help='training number of epochs')
 parser.add_argument('--reg_lambda', type=float, default=4)
 parser.add_argument('--lr', type=float, default=1e-2, help='Learning rate')
@@ -54,7 +38,7 @@ opt = parser.parse_args()
 
 ###############################################
 
-results={}#torch.load("tinyImagenet.pth")
+results={}
 
 parent_exp_dir='./TINYIMAGNET_exp_dir/'#Change to yours
 
@@ -65,7 +49,6 @@ n_seeds=1
 n_tasks=10
 accs=[[0 for i in range(n_seeds)] for j in range(n_tasks)]
 forgettings=[[0 for i in range(n_seeds)] for j in range(n_tasks)]
-#extra_str="tinyimagenet_exp"+"num_epochs_60reg_lambda_"+str(reg_lambda)+"lr_0.01b1_Falseneuron_omega_Truenormalize_"+str(normalize)+"dropout_Falsescale_"+str(scale)+"_lam"+str(lam)
 dataset_parent_dir = 'Data/TINYIMAGNET'
 continual_tester = Continual_Tester(n_tasks, opt, parent_exp_dir, dataset_parent_dir)
 models_accs=continual_tester.test_taskacc_per_model(0)

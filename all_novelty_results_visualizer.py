@@ -5,10 +5,9 @@ A depricated file, it was used as a draft to compare the performance of differen
 """
 print_all_values = 1
 from Test_Utils import *
-#Results are in /home/ral3833/Novel_Detection/continual_novelty_detection/Open_Sim_Trials/final
 reg_lambdas = [0, 4]  # [0,1,2,4,8]
 novelty_methods = ["Gen_based", "Mahalanobis", "Max_Softmax", "ODIN"]
-novelty_methods = ["Baseline","Max_Softmax"]#,"Open_Sim","Max_Softmax"
+#novelty_methods = ["Baseline","Max_Softmax"]#
 z_sizes = [8, 16, 32, 63, 128]
 novelty_batchsizes = [32, 64, 128, 256]
 novelty_layer_indes = [0, 1, 2, 3, 4]
@@ -16,81 +15,60 @@ novelty_magnitudes = [0, 0.01, 0.002, 0.0014, 0.001, 0.0005]
 novelty_n_epochs = [10, 20, 30, 50, 100]
 buffer_sizes = [0, 1800, 4500,9000]#0
 main_result_file = "Resultstinyimagenet_expnovelty_method"
-#
-#"z_size_2novelty_n_epochs_3","z_size_2novelty_n_epochs_1", 
-#","z_size_2novelty_n_epochs_3", "z_size_19"
-# "magnitude_1.0novelty_temperature_2.0novelty_batchsize_200novelty_feature_based_Falsenovelty_z_size_23",
-#                         "magnitude_1.0novelty_temperature_1.0novelty_batchsize_200novelty_feature_based_Falsenovelty_z_size_23", 
-#                         "magnitude_1.0novelty_temperature_0.5novelty_batchsize_200novelty_feature_based_Falsenovelty_z_size_23","24novelty_n_epochs_1"
-# "z_size_12" ,     "25novelty_n_epochs_1" 
-special_charactrastics = [  "z_size_19",  "_24novelty_n_epochs_3"  ]
-special_charO="_z_size_2"
+
+
 tune_baed_on = "out"  # "firs_det_errs"
 for arch in ["ResNet"]:  # ["VGG","ResNet"]:
     for buffer_size in buffer_sizes:
         for method in ["MAS", "LwF"]:
-            for special_char in special_charactrastics:
-                for reg_lambda in reg_lambdas:
 
-                    if method == "LwF" and reg_lambda > 0:
-                        continue
-                    best_results = {}
-                    for novelty_method in novelty_methods:
-                        # "Results" + novelty_extra_str + "_" + str(opt.arch) + "_" + str(opt.regularization_method) + "_" + str(
-                        #     opt.reg_lambda) + ".pth"
-                        main_result_file = "Resultstinyimagenet_exp"
-                        
-                        if novelty_method == "Open_Sim_perturb":
-                            main_result_file += "*novelty_method_" + str(
-                                novelty_method) + "*" + special_char + "*_" + str(buffer_size) + "_" + str(
-                                arch) + "_" + str(method) + "_" + str(
-                                reg_lambda)
-                            
-                        elif novelty_method == "Open_Sim":
-                            main_result_file += "*novelty_method_" + str(
-                                novelty_method) + "novelty_magnitude*" + special_charO + "*_" + str(buffer_size) + "_" + str(
-                                arch) + "_" + str(method) + "_" + str(
-                                reg_lambda)
-                            #import pdb;pdb.set_trace()
+
+            for reg_lambda in reg_lambdas:
+
+                if method == "LwF" and reg_lambda > 0:
+                    continue
+                best_results = {}
+                for novelty_method in novelty_methods:
+
+
+
+                    main_result_file += "*novelty_method_" + str(novelty_method) + "*" + "_" + str(
+                        buffer_size) + "_" + str(arch) + "_" + str(method) + "_" + str(reg_lambda)
+                    filename = "" + main_result_file + "*.pth"
+
+                    files_path = glob.glob(filename, recursive=True)
+                    # print(files_path)
+                    min_out_pr = 1
+                    min_results_file = ""
+                    this_best_results = None
+
+                    for file in files_path:
+
+                        results = torch.load(file)
+                        if len(results) < 10:
+                            continue
+                        out_pr = 0
+                        # for result in results:# this can be reverted to only the first task
+                        # only on the first task
+                        result = results[0]
+                        if tune_baed_on == "out":
+                            if result.out_data_tpr == 0:
+                                out_pr = 1
+                                break
+                            out_pr += result.out_data_auc  # /len(results)
                         else:
-                            main_result_file += "*novelty_method_" + str(novelty_method) + "*" + "_" + str(
-                                buffer_size) + "_" + str(arch) + "_" + str(method) + "_" + str(reg_lambda)
-                        filename = "" + main_result_file + "*.pth"
-                        # print(filename)
-                        # import pdb;pdb.set_trace()
-                        files_path = glob.glob(filename, recursive=True)
-                        # print(files_path)
-                        min_out_pr = 1
-                        min_results_file = ""
-                        this_best_results = None
 
-                        for file in files_path:
+                            out_pr += result.det_errs[0][0]
+                        if min_out_pr > out_pr and out_pr != 0:
+                            # import pdb;pdb.set_trace()
+                            min_results_file = file
+                            this_best_results = results
+                            min_out_pr = out_pr
 
-                            results = torch.load(file)
-                            if len(results) < 10:
-                                continue
-                            out_pr = 0
-                            # for result in results:# this can be reverted to only the first task
-                            # only on the first task
-                            result = results[0]
-                            if tune_baed_on == "out":
-                                if result.out_data_tpr == 0:
-                                    out_pr = 1
-                                    break
-                                out_pr += result.out_data_auc  # /len(results)
-                            else:
-                                # if len(result.det_errs)>0 and len(result.det_errs[0])>0:
-                                out_pr += result.det_errs[0][0]  # /len((results)-1)
-                            if min_out_pr > out_pr and out_pr != 0:
-                                # import pdb;pdb.set_trace()
-                                min_results_file = file
-                                this_best_results = results
-                                min_out_pr = out_pr
-                                
-                                print(min_results_file,novelty_method, out_pr)
+                            print(min_results_file,novelty_method, out_pr)
 
-                        if this_best_results is not None:
-                            best_results[novelty_method] = this_best_results
+                    if this_best_results is not None:
+                        best_results[novelty_method] = this_best_results
                     avg_det_errors = {key: [] for key in novelty_methods}
                     avg_auc = {key: [] for key in novelty_methods}
                     avg_pretasks_det_errors = {key: [] for key in novelty_methods}
@@ -174,24 +152,12 @@ for arch in ["ResNet"]:  # ["VGG","ResNet"]:
                     labels = list(best_results.keys())
                     keys = list(best_results.keys())
                     import os
-                    if not os.path.exists("plots/Open_Sim/"+special_char):
+                    if not os.path.exists("plots"):
                         #os.makedirs(directory)
-                        os.makedirs("plots/Open_Sim/"+special_char)
+                        os.makedirs("plots/")
                     this_name = "plots/Open_Sim/"+special_char+"/TINYIMAGENET_" + arch + "_" + method + "_" + str(reg_lambda) + "_"+str(buffer_size)+"_"
                     """
-                    avg_det_errors = {key: [] for key in novelty_methods}
-                    avg_auc = {key: [] for key in novelty_methods}
-                    avg_pretasks_det_errors = {key: [] for key in novelty_methods}
-                    avg_current_det_errors = {key: [] for key in novelty_methods}
-                    avg_pretasks_auc = {key: [] for key in novelty_methods}
-                    avg_current_auc = {key: [] for key in novelty_methods}
-                    forg_in_errs = {key: [] for key in novelty_methods}
-                    forg_out_errs = {key: [] for key in novelty_methods}
-                    false_againtcurrent_n_errs= {key: [] for key in novelty_methods}
-                    combined_auc = {key: [] for key in novelty_methods}
-                    combined_det_err = {key: [] for key in novelty_methods}
-                    combined_forg_in_errs = {key: [] for key in novelty_methods}
-                    combined_forg_out_errs= {key: [] for key in novelty_methods}
+
                     """
 
                     print("###############################################################")

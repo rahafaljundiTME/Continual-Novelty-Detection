@@ -153,7 +153,7 @@ for arg in vars(opt):
     extra_str = extra_str + str(arg, ) + '_' + str(getattr(opt, arg))
 
 model_path=parent_exp_dir+'/'+str(n_tasks)+'/CND/'+'Seed'+str(seed) +extra_str+'/best_model.pth.tar'
-data_dir='/home/ral3833/8seq/'
+data_dir='./8seq/'
 cn_models=[]#a lost of continual novelty detection models
 
 for task_model in range(0,n_tasks):
